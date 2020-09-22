@@ -1,0 +1,7 @@
+---
+  - name: Ansible WEB server configuration
+    hosts: web_servers
+    become: yes
+    roles:
+      - users
+      - nginx
