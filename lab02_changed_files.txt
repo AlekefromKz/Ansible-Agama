@@ -1,0 +1,5 @@
+added user: /home/roman 
+added user: /home/juri 
+changed authorized_kyes: added public key: /home/roman/authorized_keys 
+changed authorized_kyes: added public key: /home/juri/authorized_keys 
+added html document: /var/www/html/index.html added
