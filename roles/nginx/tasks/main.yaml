@@ -14,9 +14,9 @@
       src: "./files/index.html"
       dest: "/var/www/html/index.html"
     
-  - name: Restart nginx 
-    service:
-      name: nginx
-      state: restarted
-      
-
+    
+  - name: change default
+    copy:
+      src: "./files/default_enabled"
+      dest: "/etc/nginx/sites-enabled/default"
+    notify: Restart nginx
