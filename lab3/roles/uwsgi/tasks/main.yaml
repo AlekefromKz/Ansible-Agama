@@ -1,0 +1,26 @@
+---
+  - name: install uWSGI
+    apt:
+      pkg: 
+        - uwsgi
+        - uwsgi-plugin-python3
+      update_cache: yes
+     
+
+  
+  - name: start uwsgi
+    service:
+      name: uwsgi
+      state: started
+      enabled: yes
+    become: yes
+   
+
+  
+      
+  - name: copy agama.ini
+    copy:
+      src: "./files/agama.ini"
+      dest: "/etc/uwsgi/apps-enabled/agama.ini"
+    notify: Restart uwsgi
+
