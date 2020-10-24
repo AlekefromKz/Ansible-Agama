@@ -1,0 +1,30 @@
+---
+  - name: Deps Grafana
+    apt: 
+      name:
+        - adduser 
+        - libfontconfig1
+   
+  - name: Download Grafana
+    get_url:
+      url: https://dl.grafana.com/oss/release/grafana_7.2.1_amd64.deb
+      dest: /tmp/grafana_7.2.1_amd64.deb 
+  
+  - name: Install Grafana
+    apt:
+      deb: /tmp/grafana_7.2.1_amd64.deb 
+    
+  - name: grafana behind reverse proxy
+    template:
+      src: grafana.ini.j2
+      dest: /etc/grafana/grafana.ini
+    
+    notify:
+      - restart grafana
+  
+
+  - name: Start grafana-server
+    service: 
+      name: grafana-server
+      state: started
+      enabled: yes
