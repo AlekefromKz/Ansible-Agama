@@ -5,12 +5,14 @@
   become: yes
   roles:
     - init
+    - reverse
 
 - name: Bind exporter
   hosts: dns_servers 
   become: yes
   roles:
     - bind_exporter
+    - bind9_grafana
   tags: 
     - bind
 
@@ -20,6 +22,7 @@
   become: yes
   roles:
     - mysql_exporter
+
   tags: 
     - mysql
   
@@ -38,5 +41,13 @@
     - grafana
   tags: 
     - grafana
+
+
+
+
+
+
+
+
     
     

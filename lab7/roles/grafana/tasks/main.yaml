@@ -18,7 +18,6 @@
     template:
       src: grafana.ini.j2
       dest: /etc/grafana/grafana.ini
-    
     notify:
       - restart grafana
   
@@ -28,3 +27,16 @@
       name: grafana-server
       state: started
       enabled: yes
+
+
+  - name: Changing prometheus.yaml
+    template:
+      src: prometheus.yml.j2
+      dest: /etc/prometheus/prometheus.yml
+    notify:
+      - restart prometheus
+
+
+
+  
+  
