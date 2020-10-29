@@ -1,0 +1,24 @@
+---
+- name: Install packages influxdb, influxdb-client
+  apt:
+    name: 
+      - influxdb-client
+      - influxdb
+      - fping
+    state: present
+  
+- name: Telegraf package download
+  get_url:
+    url: https://dl.influxdata.com/telegraf/releases/telegraf_1.16.0-1_amd64.deb
+    dest: /opt/telegraf_1.16.0-1_amd64.deb
+
+- name: Telegraf package installation
+  apt: 
+    deb: /opt/telegraf_1.16.0-1_amd64.deb
+
+- name: Telegraf config
+  template:
+    src: telegraf.conf.j2
+    dest: /etc/telegraf/telegraf.conf
+  notify: 
+    - Restart Telegraf

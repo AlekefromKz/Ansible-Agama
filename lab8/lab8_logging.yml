@@ -1,0 +1,9 @@
+---
+
+ - name: InfluxDB
+   hosts: influxdb
+   roles: 
+    - influxdb
+    - pinger
+    - rsyslog
+   become: yes
