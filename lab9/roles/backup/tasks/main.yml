@@ -1,0 +1,12 @@
+---
+
+- name: Add the user 'backup' with a specific uid and a primary group of 'admin'
+  user:
+    name: backup
+
+
+- name: Create SSH key for user backup in ~backup/.ssh/id_rsa
+  user:
+    name: backup
+    generate_ssh_key: yes
+    ssh_key_file: .ssh/id_rsa
