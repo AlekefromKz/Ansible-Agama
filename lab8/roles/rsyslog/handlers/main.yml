@@ -3,3 +3,8 @@
   service:
     name: rsyslog
     state: restarted
+
+- name: Restart Telegraf
+  service:
+    name: telegraf
+    state: restarted
