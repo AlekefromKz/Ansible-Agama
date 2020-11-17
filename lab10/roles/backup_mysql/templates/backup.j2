@@ -1,0 +1,4 @@
+11 0 * * *     backup  mysqldump agama > backup/agama.sql
+22 0 * * 0     backup  duplicity --no-encryption full backup/agama.sql rsync://AlekefromKz@backup.aleke.kz//home/AlekefromKz/mysql_agama
+22 0 * * 1-6   backup  duplicity --no-encryption incremental backup/agama.sql rsync://AlekefromKz@backup.aleke.kz//home/AlekefromKz/mysql_agama
+

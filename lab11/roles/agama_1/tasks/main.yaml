@@ -1,0 +1,27 @@
+---
+  - name: ensure python3-flask-sqlalchemy is installed
+    apt: 
+      name: python3-flask-sqlalchemy
+      state: latest
+      update_cache: yes
+
+  - name: Create agama user
+    user:
+      name: agama
+      
+  - name: Create /opt/agama folder
+    file:
+      path: /opt/agama
+      state: directory
+      owner: agama
+      group: agama
+      mode: '0774'
+
+  - name: download agama.py to /opt/agama folder
+    get_url:
+      url: https://raw.githubusercontent.com/hudolejev/agama/master/agama.py
+      dest: /opt/agama
+      owner: agama
+      group: agama
+      mode: '0774'
+

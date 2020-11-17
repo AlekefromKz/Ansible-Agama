@@ -1,0 +1,1 @@
+duplicity --no-encryption restore rsync://AlekefromKz@backup.aleke.kz//home/AlekefromKz/mysql_agama restore/agama.sql

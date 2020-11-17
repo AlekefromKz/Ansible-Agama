@@ -1,4 +1,11 @@
 ---
+- name: Install packages influxdb, influxdb-client
+  apt:
+    name: 
+      - influxdb-client
+    state: present
+
+
 - name: Telegraf package download
   get_url:
     url: https://dl.influxdata.com/telegraf/releases/telegraf_1.16.0-1_amd64.deb

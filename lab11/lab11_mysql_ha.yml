@@ -1,0 +1,50 @@
+---
+
+- name: BIND
+  hosts: dns_servers
+  roles:
+    - bind9
+    - bind9m1
+  become: yes
+
+
+- name: MySQL
+  hosts: db_servers
+  roles:
+    - mysql
+    - mysql_exporter
+  become: yes
+
+
+- name: AGAMA
+  hosts: app_servers
+  roles:
+    - agama
+    - agama_1
+  become: yes
+
+
+- name: BACKUP
+  hosts: all
+  roles:
+    - backup
+  become: yes
+
+
+- name: GRAFANA
+  hosts: grafana
+  roles:
+    - grafana
+  become: yes
+
+
+- name: PROMETHEUS
+  hosts: prometheus
+  roles:
+    - prometheus
+  become: yes
+
+
+
+
+
