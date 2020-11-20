@@ -3,7 +3,7 @@
  - name: Database server
    hosts: db_servers
    roles:
-     - mysql
+     - mysql-lab4
    become: yes
    
    
@@ -11,9 +11,9 @@
  - name: Web app
    hosts: app_servers
    roles:
-     - agama
-     - uwsgi
-     - nginx
+     - agama-lab4
+     - uwsgi-lab4
+     - nginx-lab4
    become: yes
    
 

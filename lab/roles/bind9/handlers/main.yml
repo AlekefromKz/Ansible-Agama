@@ -1,0 +1,11 @@
+---
+ - name: restart bind9
+   service:
+     name: bind9
+     state: restarted
+
+
+ - name: rndc reload
+   become: yes
+   become_user: root
+   shell: rndc reload

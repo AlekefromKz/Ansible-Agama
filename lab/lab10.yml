@@ -1,0 +1,15 @@
+---
+
+- name: MySQL backup configurations 
+  roles: 
+    - backup_mysql
+  hosts: db_servers
+  become: yes
+
+
+- name: Grafana backup configurations 
+  roles: 
+    - backup_grafana
+  hosts: grafana
+  become: yes
+

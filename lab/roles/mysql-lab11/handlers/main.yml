@@ -1,0 +1,10 @@
+---
+
+- name: Systemctl
+  shell: "systemctl daemon-reload"
+
+
+- name: Restart mysql
+  service:
+    name: mysql
+    state: restarted

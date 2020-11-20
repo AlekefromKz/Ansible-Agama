@@ -1,0 +1,46 @@
+---
+
+ - name: installing bind9
+   apt:
+      name: bind9
+      state: present
+ 
+ - name: bind config
+   template:
+      src: ../templates/named.conf.options.j2
+      dest: /etc/bind/named.conf.options
+   notify: restart bind9
+  
+ - name: Configure master zone
+   template: 
+      src: ../templates/db.aleke.kz
+      dest: /etc/bind/db.aleke.kz
+   notify: restart bind9
+
+ - name: Update your VMs DNS settings
+   template:
+      src: ../templates/resolv.conf
+      dest: /etc/resolv.conf
+   notify: 
+       - restart bind9  
+       - rndc reload
+   
+ - name: change named.conf.default-zones
+   template:
+      src: ../templates/named.conf.default-zones 
+      dest: /etc/bind/named.conf.default-zones 
+
+
+
+ - name: systemctl stop systemd-resolved
+   become: yes
+   become_user: root
+   shell: systemctl stop systemd-resolved
+
+ - name: Update your VMs DNS settings
+   template:
+      src: ../templates/resolv.conf
+      dest: /etc/resolv.conf
+   notify: 
+       - restart bind9  
+       - rndc reload

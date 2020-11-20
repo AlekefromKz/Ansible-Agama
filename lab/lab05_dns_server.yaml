@@ -1,0 +1,22 @@
+---
+
+ - name: Collect info about all VMs
+   hosts: all 
+   tasks:
+     - setup:
+
+ - name: DNS server vm2
+   hosts: dns_servers
+   roles:
+     - bind9
+   become: yes
+   
+   
+
+ - name: DNS server vm1
+   hosts: AlekefromKz-1
+   roles:
+     - bind9m1
+   become: yes
+   
+   

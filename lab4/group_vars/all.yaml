@@ -1,4 +1,4 @@
-mysql_host: 192.168.42.27
+mysql_host: 192.168.42.187	
 mysql_database: agama
 mysql_user: agama
 mysql_password: !vault |
