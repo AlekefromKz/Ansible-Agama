@@ -1,0 +1,33 @@
+---
+
+- name: Create agama directory 
+  file:
+    name: /opt/agama
+    state: directory
+    owner: "472"
+    group: "472"
+    recurse: true
+
+- name: download Agama configs 
+  get_url:
+    url: https://raw.githubusercontent.com/hudolejev/agama/master/Dockerfile
+    dest: /opt/agama/
+    mode: "777"
+
+    
+- name: create Docker image 
+  docker_image:
+    name: agama
+    build:
+      path: /opt/agama
+    source: build
+
+- name: Agama container
+  docker_container:
+    name: agama
+    image: agama
+    env:
+      AGAMA_DATABASE_URI: "mysql://{{mysql_user}}:{{mysql_password}}@{{mysql_host}}/{{mysql_database}}"
+    ports:
+      - 8008:8000
+  

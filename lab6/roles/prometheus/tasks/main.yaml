@@ -3,12 +3,12 @@
   apt: 
     name: prometheus
 
-- name: Nginx config for nodes
-  template:
-    src: ../templates/node_exporter
-    dest:  /etc/nginx/sites-enabled/default
-  notify: 
-     - restart nginx
+# - name: Nginx config for nodes
+#   template:
+#     src: ../templates/node_exporter
+#     dest:  /etc/nginx/sites-enabled/default
+#   notify: 
+#      - restart nginx
 
 - name: add default ARGS
   template:

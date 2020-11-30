@@ -6,6 +6,8 @@
   roles:
     - init
     - reverse
+  tags: 
+    - rev
 
 - name: Bind exporter
   hosts: dns_servers 

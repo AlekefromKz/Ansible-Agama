@@ -41,7 +41,7 @@
  - name: Create a REPLICATION for lab11
    mysql_user:
       name: "replication"
-      password: "replication"
+      password: "{{mysql_password}}"
       host: "%"
       priv: "*.*:REPLICATION SLAVE"
       login_unix_socket: /var/run/mysqld/mysqld.sock
