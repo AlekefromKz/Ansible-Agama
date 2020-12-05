@@ -1,15 +1,21 @@
-AlekefromKz-1 ansible_host=193.40.156.86 ansible_port=1622 ansible_ssh_user=ubuntu ansible_python_interpreter=python3
+AlekefromKz-1 ansible_host=193.40.156.86 ansible_port=2222 ansible_ssh_user=ubuntu ansible_python_interpreter=python3
 
-AlekefromKz-2 ansible_host=193.40.156.86 ansible_port=18722 ansible_ssh_user=ubuntu ansible_python_interpreter=python3
+AlekefromKz-2 ansible_host=193.40.156.86 ansible_port=2422 ansible_ssh_user=ubuntu ansible_python_interpreter=python3
 
 [web_servers]
 AlekefromKz-1
+
+[web_servers_HA]
+AlekefromKz-1
+AlekefromKz-2
 
 [app_servers]
 AlekefromKz-1
 
 [db_servers]
 AlekefromKz-2
+AlekefromKz-1
+
 
 [dns_servers]
 AlekefromKz-2
@@ -26,3 +32,6 @@ AlekefromKz-1
 [influxdb]
 AlekefromKz-1
 
+[haproxy]
+AlekefromKz-1
+AlekefromKz-2

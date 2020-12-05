@@ -1,4 +1,4 @@
-mysql_host: 192.168.42.27
+mysql_host: 192.168.42.24
 mysql_database: agama
 mysql_user: agama
 mysql_password: !vault |
@@ -19,6 +19,7 @@ forwarders_IPs:
 allowed_IPs:
   - 192.168.42.0/24 
   - 127.0.0.0/8
+  - 172.17.0.0/16
 
 backup: 192.168.42.39
 

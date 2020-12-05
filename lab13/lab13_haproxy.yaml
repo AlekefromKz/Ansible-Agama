@@ -1,0 +1,50 @@
+---
+- hosts: all
+  gather_facts: yes
+  tasks:
+    - debug: var=ansible_default_ipv4 verbosity=0
+
+- name: Collect info about all VMs
+  hosts: all 
+  tasks:
+    - setup:
+    
+- name: Double agama on both hosts 
+  hosts: haproxy
+  become: yes 
+  gather_facts: no
+  roles: 
+    - agama_docker
+  tags:
+    - ag
+
+    
+- name: HAproxy
+  hosts: haproxy
+  become: yes 
+  gather_facts: no
+  roles: 
+    - haproxy
+  tags:
+    - ha
+
+  
+- name: Keepalived
+  hosts: haproxy
+  become: yes 
+  gather_facts: no
+  roles: 
+    - keepalived
+    - keepalived_exporter
+  tags:
+    - ke
+
+- name: Prometheus
+  hosts: prometheus
+  become: yes 
+  gather_facts: no
+  roles: 
+    - prometheus_HA_keep
+  tags:
+    - pr
+

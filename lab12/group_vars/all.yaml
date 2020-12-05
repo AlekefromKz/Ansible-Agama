@@ -1,4 +1,4 @@
-mysql_host: AlekefromKz-1.aleke.kz
+mysql_host: AlekefromKz-2.aleke.kz
 mysql_database: agama
 mysql_user: agama
 mysql_password: !vault |
