@@ -1,0 +1,16 @@
+---
+- hosts: all
+  gather_facts: yes
+  tasks:
+    - debug: var=ansible_default_ipv4 verbosity=0
+
+    
+- name: DDDDDDDNNNNNNNNSSSSSSSSSS
+  hosts: dns_servers
+  become: yes 
+  gather_facts: no
+  roles: 
+    - bind9
+    - bind_exporter
+  tags:
+    - bi
