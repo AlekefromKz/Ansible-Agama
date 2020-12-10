@@ -9,4 +9,5 @@
   roles:
     - docker
     - agama_docker
+    - grafana_docker
   become: yes

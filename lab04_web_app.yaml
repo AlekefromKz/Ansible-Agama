@@ -3,7 +3,7 @@
  - name: Database server
    hosts: db_servers
    roles:
-     - mysql-lab4
+     - mysql
    become: yes
       
 
