@@ -1,0 +1,14 @@
+---
+
+- name: Install Keepalived
+  apt:
+    name: keepalived
+  
+
+- name: Configure Keepalived
+  template:
+    src: keepalived.conf
+    dest: /etc/keepalived/keepalived.conf
+  notify: 
+    - Restart keepalived 
+    

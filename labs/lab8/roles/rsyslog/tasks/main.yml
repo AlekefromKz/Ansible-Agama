@@ -1,0 +1,14 @@
+---
+- name: Install packages influxdb, influxdb-client
+  apt:
+    name: 
+      - influxdb-client
+    state: present
+
+
+- name: Rsyslog config
+  template: 
+    src: 51-telegraf.conf.j2
+    dest: /etc/rsyslog.d/51-telegraf.conf 
+  notify:
+    - Restart Rsyslog

@@ -1,0 +1,3 @@
+CHANGE MASTER TO MASTER_HOST='AlekefromKz-2.aleke.kz',
+                 MASTER_USER='replication',
+                 MASTER_PASSWORD='alekegoibro';
