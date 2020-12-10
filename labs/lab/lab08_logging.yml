@@ -1,15 +1,15 @@
 ---
 
- - name: InfluxDB
-   hosts: influxdb
-   roles: 
+- name: InfluxDB
+  hosts: influxdb
+  roles: 
     - influxdb
     - pinger
     - rsyslog
-   become: yes
+  become: yes
 
- - name: Logs
-   hosts: all
-   roles: 
+- name: Logs
+  hosts: all
+  roles: 
     - rsyslog
-   become: yes
+  become: yes
