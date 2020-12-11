@@ -11,10 +11,10 @@ $TTL	604800
 {{ domain }}.		IN	NS	AlekefromKz-3
 
 
+
 AlekefromKz-1	IN	A	{{ hostvars['AlekefromKz-1']['ansible_default_ipv4']['address'] }} 
 AlekefromKz-2	IN	A	{{ hostvars['AlekefromKz-2']['ansible_default_ipv4']['address'] }}
 AlekefromKz-3	IN	A	{{ hostvars['AlekefromKz-3']['ansible_default_ipv4']['address'] }} 
-
 bind9           IN	A	{{ hostvars['AlekefromKz-2']['ansible_default_ipv4']['address'] }} 
 mysql           IN	A	{{ hostvars['AlekefromKz-2']['ansible_default_ipv4']['address'] }} 
 nginx           IN	A	{{ hostvars['AlekefromKz-1']['ansible_default_ipv4']['address'] }} 

@@ -1,6 +1,6 @@
 ---
 
-- name: Installing bind9
+- name: Installing bind9 packages
   apt:
     name: 
       - bind9
@@ -33,7 +33,7 @@
 
 - name: Configure DNS zone
   template: 
-    src: ../templates/db.aleke.kz
+    src: ../templates/db.aleke.kz.j2
     dest: /var/lib/bind/db.aleke.kz
     force: no
   notify: restart bind9
@@ -70,8 +70,8 @@
     key_algorithm: "hmac-sha256"
     server: "{{hostvars[groups['dns_masters'][0]]['ansible_default_ipv4']['address']}}"
     zone: "{{domain}}"
-    record: "bake"
-    value: "192.168.42.22"
+    record: "aleke"
+    value: "192.168.42.120"
     # ttl: 60
   when: inventory_hostname == groups['dns_masters'][0]
   # notify: restart bind9

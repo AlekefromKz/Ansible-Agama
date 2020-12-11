@@ -7,11 +7,12 @@
          - python3-pymysql
       update_cache: yes
  
- 
+
  - name: Change default port
    template:
       src: mysql_default
       dest: /etc/mysql/mysql.conf.d/override.cnf
+      force: yes
    notify:
       - Systemctl
       - Restart mysql

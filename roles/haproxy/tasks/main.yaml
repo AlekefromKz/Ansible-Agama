@@ -5,18 +5,19 @@
     name: haproxy
     
 
+- name: HAproxy started and enabled
+  service:
+    name: haproxy
+    state: started
+    enabled: yes
+    
+
 - name: HAproxy config
   template:
     src: haproxy.cfg
     dest: /etc/haproxy/haproxy.cfg
   notify:
     - Restart HAproxy
-
-- name: HAproxy started and enabled
-  service:
-    name: haproxy
-    state: started
-    enabled: yes
 
 
 - name: HAproxy exporter container

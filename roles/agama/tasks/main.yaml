@@ -39,7 +39,7 @@
     ports:
       - 8010:8000
     env:
-      AGAMA_DATABASE_URI: mysql://{{mysql_user}}:{{mysql_password}}@{{mysql_host}}/{{mysql_database}}
+      AGAMA_DATABASE_URI: mysql://{{mysql_user}}:{{mysql_password}}@192.168.42.120/{{mysql_database}}
 
 
 - name: Agama container num2
@@ -49,4 +49,4 @@
     ports:
       - 8011:8000
     env:
-      AGAMA_DATABASE_URI: mysql://{{mysql_user}}:{{mysql_password}}@{{mysql_host}}/{{mysql_database}}
+      AGAMA_DATABASE_URI: mysql://{{mysql_user}}:{{mysql_password}}@192.168.42.120/{{mysql_database}}
