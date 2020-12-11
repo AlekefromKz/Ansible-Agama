@@ -28,8 +28,8 @@
 - name: DNS 
   hosts: dns_servers
   roles:
-    - bind9SL
-    # - bind_exporterSL
+    - bind9
+    # - bind_exporter
   become: yes
 
 - name: Install prometheus nodes on all machines
@@ -46,11 +46,11 @@
   become: yes
 
 
-- name: MySQL exporter
-  hosts: mysql_servers 
-  become: yes
-  roles:
-    - mysql_exporter
+# - name: MySQL exporter
+#   hosts: mysql_servers 
+#   become: yes
+#   roles:
+#     - mysql_exporter
 
   
 - name: Nginx exporter
@@ -112,8 +112,8 @@
 - name: MYSQL CONFIGS 
   hosts:  db_servers
   roles:
-    - mysql-lab11
-    - mysql_exporter
+    - mysql
+    # - mysql_exporter
   become: yes
 
 
@@ -123,7 +123,8 @@
     - agama_docker
     - grafana_docker
   become: yes
-
+  tags:
+      - agama
 
 - name: Double agama on both hosts 
   hosts: haproxy
@@ -131,6 +132,8 @@
   gather_facts: no
   roles: 
     - agama_docker_HA
+  tags:
+    - agama
 
     
 - name: HAproxy

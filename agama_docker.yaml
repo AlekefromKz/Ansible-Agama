@@ -1,0 +1,8 @@
+---
+
+- name: Dockerized agama
+  hosts:
+    - db_servers
+  roles:
+    - agama_docker_HA
+  become: yes
