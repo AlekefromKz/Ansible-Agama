@@ -8,7 +8,7 @@ Main product of my startup is Agama application. It is a simple Flask applicatio
 
 Application machines have following services: HAProxy, Keepalived, Dockerized agama, MySQL: Master and Slave, Bind slave, Prometheus node exporter and exporters for HAProxy, Keepalived, MySQL and Bind.
 
-The third machine: Bind master, InfluxDB, Telegraf, Prometheus, Grafana, Nginx,  Prometheus node exporter and exporters for Nginx.
+The third machine: Bind master, InfluxDB, Telegraf, Prometheus, Grafana, Nginx, Pinger Prometheus node exporter and exporters for Nginx.
 
 I configure Rsyslog as well, to be able to monitore my machines using Grafana.
 
@@ -65,7 +65,6 @@ And inside of this folder I create four following folders: agama, grafana, teleg
 3. Services have been altered the infrastructure system with errors.
 4. Hardware failure or replacement occured.
 5. Manager could give special reason for it.
-
 
 
 
