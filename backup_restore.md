@@ -4,8 +4,13 @@ On Management machine go to ansible directory and run the "infra.yaml" playbook.
 
 ```
 cd /home/aleke/University/Semester#3/InfrastructureServices/ica0002/
-ansible-playbook infra.yaml
+``` 
 ```
+ansible-playbook infra.yaml 
+```
+
+Below are written detailed restourarion processes for MySQL agama database, InfluxDB telegraf database and Grafana's grafana.db file. 
+
 
 =================== RESTORING PROCESS FOR AGAMA ======================
 
@@ -22,69 +27,149 @@ After successgull connection to AlekefromKz-1 your terminal should look like fol
 ubuntu@AlekefromKz-1:~$
 ```
 
-After run the following commands to become root 
+After run the following command to become root:
 
 ```
 sudo su - 
 ```
+Now run the following command to become backup user:
+
 ```
-su backup
+su - backup
 ```
 
-Then execute following command to download restore files from backup server (executes in one line). Example for <backup-needed-date> format: backup-24-12-2020
-duplicity --no-encryption restore rsync://MrLightWood@backup.jagama.lw//home/MrLightWood/backup-<backup-needed-date>/vm1/agama /home/backup/restore/agama.sql
-Congratulations! You have downloaded the needed restore files from backup server. Now we have to revive MySQL data from our backup agama.sql file
-Open the mysql folder in restore folder
-cd /home/backup/restore/mysql
-And execute the following command
-mysql agama < agama.sql
+Now execute the following command to download sql file from the backup server. Folder names on the backup server are created using dates in such pattern: backup-year-month-day['%Y-%m-%d']. For date choose closest sunday to the state you want to download. Example for "backup-2020-12-13": 
 
-After successful execution of previous command feel free to exit VM-1 machine
+```
+duplicity --no-encryption restore rsync://AlekefromKz@backup.aleke.kz//home/AlekefromKz/backup-backup-2020-12-13/agama ~/restore/agama.sql
+```
 
-=================== RESTORING PROCESS FOR VM-2 ======================
+You successfully downloaded the required file from the remote backup host! The last step left! 
 
-On Management host machine open terminal and type following command to connect to VM-2
-ssh -p10122 ubuntu@193.40.156.86
-Then run the following commands
-sudo -i
-su backup
-Then execute following command to download restore files from backup server (executes in one line). Example for <backup-needed-date> format: backup-24-12-2020
-duplicity --no-encryption restore rsync://MrLightWood@backup.jagama.lw//home/MrLightWood/backup-<backup-needed-date>/vm3 /home/backup/restore
-After you downloaded your restoration files, please become a root user. Just type exit and you should return to root user
+Execute the following command to use the downloaded file:
+
+```
+mysql agama < ~/restore/agama.sql
+```
+
+Here we go! Congratulations! Now you can log out from remote host by just closing the terminal or 'exit' comand. In the second case you firstly will become root. You shoul enter 'exit' command again to log out from the managed host AlekefromKz-1.
+
+
+
+
+
+
+=================== RESTORING PROCESS FOR Telegraf ======================
+On Management host machine open terminal and enter the following command to connect to AlekefromKz-1
+
+```
+ssh ubuntu@193.40.156.86 -16722
+```
+
+
+After successgull connection to AlekefromKz-1 your terminal should look like following:
+
+```
+ubuntu@AlekefromKz-1:~$
+```
+
+After run the following command to become root:
+
+```
+sudo su - 
+```
+
+Now run the following command to become backup user:
+
+```
+su - backup
+
+```
+
+Now execute the following command to download sql file from the backup server. Folder names on the backup server are created using dates in such pattern: backup-year-month-day['%Y-%m-%d']. For date choose closest sunday to the state you want to download. Example for "backup-2020-12-13": 
+
+```
+duplicity --no-encryption restore rsync://AlekefromKz@backup.aleke.kz//home/AlekefromKz/backup-backup-2020-12-13/telegraf ~/restore/telegraf
+```
+
+You successfully downloaded the required file from the remote backup host! 
+
+Now become a root user. Just type exit and you should return to root user:
+
+```
 exit
-After you become root, execute the following command
-mv /home/backup/restore/grafana/grafana.db /var/lib/grafana/grafana.db
-And execute the next command as root too
+```
+
+After you became root, execute the following command:
+
+```
 influxd restore -database telegraf -datadir /var/lib/influxdb/data /home/backup/restore/influxdb
-And restart telegraf service (also as root)
+```
+
+Now restart influxdb service:
+```
 service influxdb restart
+```
 
-Backup restoration instructions for services:
+Here we go! You successfully finished restouration process!
 
-Perform current operations on Management Client
- ...
- 5) Grafana
- ---
- 
- 
- Restore the data from backup, enter MrLightWood-1 first:
- 
- ssh -p10122 ubuntu@193.40.156.86
- sudo su  backup
- [enter password for backup user]
- cd #
- cd restore/grafana
- cp grafana.db /var/lib/grafana/grafana.db
- 
- InfluxDB
- ---
- 
- Enter MrLightWood-1 with user backup and enter the password.
- 
-influxd restore -database latency -datadir /var/lib/influxdb/data /home/backup/restore/restore-{lastDateOfBackup}/influxdb/
 
-Then, perform restart of the service:
-service influxdb restart
+
+
+
+
+=================== RESTORING PROCESS FOR Grafana ======================
+On Management host machine open terminal and enter the following command to connect to AlekefromKz-1
+
+```
+ssh ubuntu@193.40.156.86 -16722
+```
+
+
+After successgull connection to AlekefromKz-1 your terminal should look like following:
+
+```
+ubuntu@AlekefromKz-1:~$
+```
+
+After run the following command to become root:
+
+```
+sudo su - 
+```
+
+Now run the following command to become backup user:
+
+```
+su - backup
+
+```
+
+Now execute the following command to download sql file from the backup server. Folder names on the backup server are created using dates in such pattern: backup-year-month-day['%Y-%m-%d']. For date choose closest sunday to the state you want to download. Example for "backup-2020-12-13": 
+
+```
+duplicity --no-encryption restore rsync://AlekefromKz@backup.aleke.kz//home/AlekefromKz/backup-backup-2020-12-13/grafana ~/restore/grafana
+```
+
+You successfully downloaded the required file from the remote backup host! 
+
+Now become a root user. Just type exit and you should return to root user:
+
+```
+exit
+```
+
+After you became root, execute the following command:
+
+```
+mv /home/backup/restore/grafana/grafana.db /var/lib/grafana/grafana.db
+```
+
+Here we go! You successfully finished restouration process!
+
+
+
+
 
 
 
