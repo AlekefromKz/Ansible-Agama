@@ -2,34 +2,34 @@ If infrastructure is not in desired state, try to fix in using ansible playbook 
 
 On Management machine go to ansible directory and run the "infra.yaml" playbook.
 
-'''
+```
 cd /home/aleke/University/Semester#3/InfrastructureServices/ica0002/
 ansible-playbook infra.yaml
-'''
+```
 
 =================== RESTORING PROCESS FOR AGAMA ======================
 
 On Management host machine open terminal and enter the following command to connect to AlekefromKz-1
 
-'''
+```
 ssh ubuntu@193.40.156.86 -16722
-'''
+```
 
 
 After successgull connection to AlekefromKz-1 your terminal should look like following:
 
-'''
+```
 ubuntu@AlekefromKz-1:~$
-'''
+```
 
 After run the following commands to become root 
 
-'''
+```
 sudo su - 
-'''
-'''
+```
+```
 su backup
-'''
+```
 
 Then execute following command to download restore files from backup server (executes in one line). Example for <backup-needed-date> format: backup-24-12-2020
 duplicity --no-encryption restore rsync://MrLightWood@backup.jagama.lw//home/MrLightWood/backup-<backup-needed-date>/vm1/agama /home/backup/restore/agama.sql
