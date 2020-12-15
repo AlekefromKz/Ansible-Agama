@@ -37,7 +37,6 @@ Now run the following command to become backup user:
 ```
 su - backup
 ```
-
 Now execute the following command to download sql file from the backup server. Folder names on the backup server are created using dates in such pattern: backup-year-month-day['%Y-%m-%d']. For date choose closest sunday to the state you want to download. Example for "backup-2020-12-13": 
 
 ```
@@ -63,7 +62,7 @@ Here we go! Congratulations! Now you can log out from remote host by just closin
 On Management host machine open terminal and enter the following command to connect to AlekefromKz-1
 
 ```
-ssh ubuntu@193.40.156.86 -16722
+ssh ubuntu@193.40.156.86 -13822
 ```
 
 
@@ -113,6 +112,8 @@ service influxdb restart
 
 Here we go! You successfully finished restouration process!
 
+Now you can log out from remote host by just closing the terminal or 'exit' comand. In the second case you firstly will become root. You shoul enter 'exit' command again to log out from the managed host AlekefromKz-1.
+
 
 
 
@@ -122,7 +123,7 @@ Here we go! You successfully finished restouration process!
 On Management host machine open terminal and enter the following command to connect to AlekefromKz-1
 
 ```
-ssh ubuntu@193.40.156.86 -16722
+ssh ubuntu@193.40.156.86 -13822
 ```
 
 
@@ -166,6 +167,8 @@ mv /home/backup/restore/grafana/grafana.db /var/lib/grafana/grafana.db
 ```
 
 Here we go! You successfully finished restouration process!
+Now you can log out from remote host by just closing the terminal or 'exit' comand. In the second case you firstly will become root. You shoul enter 'exit' command again to log out from the managed host AlekefromKz-1.
+
 
 
 
