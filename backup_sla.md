@@ -1,10 +1,10 @@
-[INTRODUCTION]
+*[INTRODUCTION]*
 
 Main product of my startup is Agama application. It is a simple Flask application, which can be used as to-do list. I try to do my best to let my customers be able to use Agama almost every time. It is done by using Keepalived, HAProxy, Docker and many other services, which I will mention later. I have three machines, two of which are used for aplication and the other one is for internal services. 
 
 
 
-[SERVICES]
+*[SERVICES]*
 
 Application machines have following services: HAProxy, Keepalived, Dockerized agama, MySQL: Master and Slave, Bind slave, Prometheus node exporter and exporters for HAProxy, Keepalived, MySQL and Bind.
 
@@ -14,7 +14,7 @@ I configure Rsyslog as well, to be able to monitore my machines using Grafana.
 
 
 
-[Backup coverage]
+*[Backup coverage]*
 
 All services except MySQL, InfluxDB and Grafana can be restored using my infra.yaml ansible playbook. MySQL, InfluxDB and Grafana need to be backuped. 
 
@@ -28,7 +28,7 @@ The last service is Grafana. It is one of the most important parts of my monitor
 
 
 
-[Backup RPO]
+*[Backup RPO]*
 
 <!-- the amount of data that can be lost before significant harm to the business occurs -->
 
@@ -38,7 +38,7 @@ Information saved in Latency, Telegraf and Grafana are not as valuable as Agama 
 
 
 
-[Versioning and retention]
+*[Versioning and retention]*
 
 There is one backup onstite and one offsite. 
 
@@ -50,7 +50,7 @@ And inside of this folder I create four following folders: agama, grafana, teleg
 
 
 
-[Usability]
+*[Usability]*
 
 1. Backup can be used. 
 2. Backup was created in time.
@@ -58,7 +58,7 @@ And inside of this folder I create four following folders: agama, grafana, teleg
 
 
 
-[Restoration criteria]
+*[Restoration criteria]*
 
 1. Sensitive file has been deleted.
 2. Services failed and they are hard or too long to be restored manually.
@@ -69,6 +69,6 @@ And inside of this folder I create four following folders: agama, grafana, teleg
 
 
 
-[Backup RTO]
+*[Backup RTO]*
 
 30 minutes
