@@ -1,160 +1,353 @@
 --- 
 
-- name: Lab2
-  gather_facts: yes
-  hosts: web_servers
+- name: Init 
+  hosts: all
   roles:
-    - nginx
-    - users
-  become: yes
-
-
-- name: Agama and nginx
-  hosts: app_servers 
-  roles:
-    - agama-lab4
-    - uwsgi-lab4
-    - nginx-lab4
-  become: yes
-
-
-- name: DB
-  hosts: db_servers
-  roles:
-    - mysql
-  become: yes
-
-
-- name: DNS 
-  hosts: dns_servers
-  roles:
-    - bind9
-    # - bind_exporter
-  become: yes
-
-- name: Install prometheus nodes on all machines
-  hosts: all 
-  roles: 
+    - init
+    - backup
     - node_exporter
   become: yes
-
-
-- name: Prometheus
-  hosts: prometheus 
-  roles: 
-    - prometheus
-  become: yes
-
-
-# - name: MySQL exporter
-#   hosts: mysql_servers 
-#   become: yes
-#   roles:
-#     - mysql_exporter
-
-  
-- name: Nginx exporter
-  hosts: web_servers
-  become: yes
-  roles:
-    - nginx_exporter
-
-- name: Grafana
-  hosts: grafana
-  become: yes
-  roles:
-    - grafana
-
-
-- name: Bind exporter
-  hosts: dns_servers 
-  become: yes
-  roles:
-    - bind_exporter
-
-
-- name: InfluxDB
-  hosts: influxdb
-  roles: 
-    - influxdb
-    - pinger
-    - rsyslog
-  become: yes
-
-- name: Logs
-  hosts: all
-  roles: 
-    - rsyslog
-  become: yes
-
-
-- name: backup user
-  roles: 
-    - backup
-  hosts: all
-  become: yes
-
-
-- name: MySQL backup configurations 
-  roles: 
-    - backup_mysql
-  hosts: db_servers
-  become: yes
-
-
-- name: Grafana backup configurations 
-  roles: 
-    - backup_grafana
-  hosts: grafana
-  become: yes
-
-
-- name: MYSQL CONFIGS 
-  hosts:  db_servers
-  roles:
-    - mysql
-    # - mysql_exporter
-  become: yes
-
-
-- hosts: AlekefromKz-1
-  roles:
-    - docker
-    - agama_docker
-    - grafana_docker
-  become: yes
   tags:
-      - agama
+    - start
 
-- name: Double agama on both hosts 
-  hosts: haproxy
-  become: yes 
-  gather_facts: no
-  roles: 
-    - agama_docker_HA
+
+- name: Bind9 master and slaves, bind-prometheus-exporter  
+  hosts: dns_servers
+  roles:
+    - bind
+    - bind_exporter
+  become: yes
+  tags: 
+    - bind
+
+
+- name: Dockerized agama
+  hosts: application
+  roles:
+    - agama
+  become: yes
   tags:
     - agama
 
-    
-- name: HAproxy
-  hosts: haproxy
-  become: yes 
-  gather_facts: no
-  roles: 
+- name: Keepalived and HAProxy for application machines 
+  hosts: application
+  roles:
+    - mysql
     - haproxy
+    - keepalived
+  become: yes
+  tags: 
+    - application
+
+
+- name: MySQL, Keepalived exporters
+  hosts: application
+  roles:
+    - mysql_exporter
+    - keepalived_exporter
+  become: yes
+  tags: 
+    - expo
+
+
+- name: Internal machine configuration 
+  hosts: internal
+  roles:
+    - influxdb
+    - telegraf
+    - prometheus
+    - grafana
+    - pinger
+  become: yes
+  tags:
+    - internal
+
+
+- name: Nginx 
+  hosts: internal
+  roles:
+    - nginx
+    - nginx_exporter
+  become: yes
+  tags:
+    - nginx
+
+
+- name: Rsyslog
+  hosts: all
+  roles:
+    - rsyslog
+  become: yes
+  tags:
+    - rsyslog
+
+
+- name: Backup 
+  hosts: AlekefromKz-1
+  roles:
+    - backup_vm1
+  become: yes
+  tags:
+    - backup1
+
+
+- name: Backup 
+  hosts: AlekefromKz-3
+  roles:
+    - backup_vm3
+  become: yes
+  tags:
+    - backup3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# - name: Lab2
+#   gather_facts: yes
+#   hosts: web_servers
+#   roles:
+#     - nginx
+#     - users
+#   become: yes
+
+
+# - name: Agama and nginx
+#   hosts: app_servers 
+#   roles:
+#     - agama-lab4
+#     - uwsgi-lab4
+#     - nginx-lab4
+#   become: yes
+
+
+# - name: DB
+#   hosts: db_servers
+#   roles:
+#     - mysql
+#   become: yes
+
+
+# - name: DNS 
+#   hosts: dns_servers
+#   roles:
+#     - bind9SL
+#     # - bind_exporterSL
+#   become: yes
+
+# - name: Install prometheus nodes on all machines
+#   hosts: all 
+#   roles: 
+#     - node_exporter
+#   become: yes
+
+
+# - name: Prometheus
+#   hosts: prometheus 
+#   roles: 
+#     - prometheus
+#   become: yes
+
+
+# # - name: MySQL exporter
+# #   hosts: mysql_servers 
+# #   become: yes
+# #   roles:
+# #     - mysql_exporter
 
   
-- name: Keepalived
-  hosts: haproxy
-  become: yes 
-  gather_facts: no
-  roles: 
-    - keepalived
-    - keepalived_exporter
+# - name: Nginx exporter
+#   hosts: web_servers
+#   become: yes
+#   roles:
+#     - nginx_exporter
 
-- name: Prometheus
-  hosts: prometheus
-  become: yes 
-  gather_facts: no
-  roles: 
-    - prometheus_HA_keep
+# - name: Grafana
+#   hosts: grafana
+#   become: yes
+#   roles:
+#     - grafana
+
+
+# - name: Bind exporter
+#   hosts: dns_servers 
+#   become: yes
+#   roles:
+#     - bind_exporter
+
+
+# - name: InfluxDB
+#   hosts: influxdb
+#   roles: 
+#     - influxdb
+#     - pinger
+#     - rsyslog
+#   become: yes
+
+# - name: Logs
+#   hosts: all
+#   roles: 
+#     - rsyslog
+#   become: yes
+
+
+# - name: backup user
+#   roles: 
+#     - backup
+#   hosts: all
+#   become: yes
+
+
+# - name: MySQL backup configurations 
+#   roles: 
+#     - backup_mysql
+#   hosts: db_servers
+#   become: yes
+
+
+# - name: Grafana backup configurations 
+#   roles: 
+#     - backup_grafana
+#   hosts: grafana
+#   become: yes
+
+
+# - name: MYSQL CONFIGS 
+#   hosts:  db_servers
+#   roles:
+#     - mysql-lab11
+#     # - mysql_exporter
+#   become: yes
+
+
+# - hosts: AlekefromKz-1
+#   roles:
+#     - docker
+#     - agama_docker
+#     - grafana_docker
+#   become: yes
+#   tags:
+#       - agama
+
+# - name: Double agama on both hosts 
+#   hosts: haproxy
+#   become: yes 
+#   gather_facts: no
+#   roles: 
+#     - agama_docker_HA
+#   tags:
+#     - agama
+
+    
+# - name: HAproxy
+#   hosts: haproxy
+#   become: yes 
+#   gather_facts: no
+#   roles: 
+#     - haproxy
+
+  
+# - name: Keepalived
+#   hosts: haproxy
+#   become: yes 
+#   gather_facts: no
+#   roles: 
+#     - keepalived
+#     - keepalived_exporter
+
+# - name: Prometheus
+#   hosts: prometheus
+#   become: yes 
+#   gather_facts: no
+#   roles: 
+#     - prometheus_HA_keep

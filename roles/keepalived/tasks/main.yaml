@@ -3,7 +3,7 @@
 - name: Install Keepalived
   apt:
     name: keepalived
-  
+
 
 - name: Configure Keepalived
   template:
@@ -11,4 +11,10 @@
     dest: /etc/keepalived/keepalived.conf
   notify: 
     - Restart keepalived 
-    
+  
+
+- name: Keepalived enabled and started
+  service:
+    name: keepalived
+    state: started
+    enabled: yes

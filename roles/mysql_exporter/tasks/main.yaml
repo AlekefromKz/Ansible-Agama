@@ -1,9 +1,11 @@
 ---
-
-- name: Package Mysql Exporter
-  apt: 
-    name: prometheus-mysqld-exporter 
-
+- name: Exporter MySQL user
+  mysql_user:
+    name: "exporter_aleke"
+    password: "{{prometheus_mysqld_exporter}}"
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+    priv: "*.*:PROCESS,REPLICATION CLIENT,SELECT"
+  no_log: True
 
 
 - name: Mysql Config
@@ -14,16 +16,16 @@
     - Restart mysql_exporter
 
 
-- name: Exporter MySQL user
-  mysql_user:
-    name: "exporter_aleke"
-    password: "{{prometheus_mysqld_exporter}}"
-    login_unix_socket: /var/run/mysqld/mysqld.sock
-    priv: "*.*:PROCESS,REPLICATION CLIENT,SELECT"
-  no_log: True
+- name: Package Mysql Exporter
+  apt: 
+    name: prometheus-mysqld-exporter 
 
 
-- name: Mysql Enabled
+- name: Force all notified handlers to run at this point, not waiting for normal sync points
+  meta: flush_handlers
+
+
+- name: Mysql Exporter Enabled
   service: 
     name: prometheus-mysqld-exporter 
     state: started

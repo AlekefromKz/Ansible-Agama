@@ -10,6 +10,8 @@
     template:
       src: pinger.sh.j2
       dest: /usr/local/bin/pinger
+      owner: pinger
+      mode: u=xrw,g=r,o=r
     # become_user: pinger
 
 
@@ -23,17 +25,22 @@
 
   - name: Download config file
     template:
-       src: pinger.conf.j2
-       dest: /etc/pinger/pinger.conf
+      src: pinger.conf.j2
+      dest: /etc/pinger/pinger.conf
     # become_user: pinger
 
 
   - name: Servisizing  pinger
     template:
-       src: pinger.service.j2
-       dest: /etc/systemd/system/pinger.service
+      src: pinger.service.j2
+      dest: /etc/systemd/system/pinger.service
     notify: 
       - Systemctl daemon-reload
       - Restart pinger
     # become_user: pinger
-    
+
+  - name: Ensure pinger is started and enabled
+    service: 
+      name: pinger
+      state: started 
+      enabled: yes

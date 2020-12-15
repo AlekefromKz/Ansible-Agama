@@ -13,3 +13,9 @@
   notify: 
     - Systemctl daemon-reload
     - Restart keepalived-exporter
+
+- name: Keep alived exporter started and enabled
+  service: 
+    name: prometheus-keepalived-exporter
+    state: started 
+    enabled: yes

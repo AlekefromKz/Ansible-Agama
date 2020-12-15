@@ -1,11 +1,12 @@
 ---
-- name: Download Nginx package
+- name: Download prometheus-nginx-exporter package
   unarchive:
     src: https://github.com/nginxinc/nginx-prometheus-exporter/releases/download/v0.8.0/nginx-prometheus-exporter-0.8.0-linux-amd64.tar.gz
     dest: /usr/local/bin 
     remote_src: yes
 
-- name: Servisizing
+
+- name: Servisizing prometheus-nginx-exporter
   template: 
     src: prometheus-nginx-exporter.service.j2
     dest: /etc/systemd/system/prometheus-nginx-exporter.service
@@ -14,10 +15,9 @@
     - Restart nginx-exporter
 
 
-    
-- name: Add sub_status
+- name: Add sub_status to sites-enabled
   template:
-    src: stub_status.js
+    src: stub_status.j2
     dest: /etc/nginx/sites-enabled/stub_status
   notify:
     - restart nginx

@@ -2,12 +2,6 @@
 - name: Install Node Exporters packages
   apt: 
     name: 
-      - nginx
       - prometheus-node-exporter
     update_cache: yes 
 
-- name: Nginx config for nodes
-  template:
-    src: ../templates/node_exporter
-    dest:  /etc/nginx/sites-enabled/default
-  notify: restart nginx

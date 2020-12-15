@@ -1,3 +1,16 @@
+key "transfer_secret" {
+	algorithm hmac-sha256;
+	secret "{{ dns_transfer_secret }}";
+};
+
+key "update_secret" {
+	algorithm hmac-sha256;
+	secret "{{ dns_update_secret }}";
+};
+
+
+
+
 acl corpnets { 
     {% if allowed_IPs -%}
         {% for IP_add in allowed_IPs -%}

@@ -1,6 +1,0 @@
-  - name: Change bind zones 
-    template:
-      src: named.conf.default-zones.j2
-      dest: /etc/bind/named.conf.default-zones
-    notify:
-      - restart bind

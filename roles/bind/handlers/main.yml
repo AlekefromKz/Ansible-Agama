@@ -1,11 +1,16 @@
 ---
- - name: restart bind9
-   service:
-     name: bind9
-     state: restarted
+- name: restart bind9
+  service:
+    name: bind9
+    state: restarted
 
+- name: rndc reload
+  shell: rndc reload
 
- - name: rndc reload
-   become: yes
-   become_user: root
-   shell: rndc reload
+- name: systemctl stop systemd-resolved
+  shell: systemctl stop systemd-resolved
+
+- name: service
+  service:
+    name: systemd-resolved
+    state: stopped  

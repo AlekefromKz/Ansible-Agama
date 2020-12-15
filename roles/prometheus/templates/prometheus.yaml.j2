@@ -2,40 +2,13 @@ global:
   scrape_interval:     15s # By default, scrape targets every 15 seconds.
   evaluation_interval: 15s # By default, scrape targets every 15 seconds.
 
+
 scrape_configs:
-  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
-  - job_name: 'prometheus'
-
-    # Override the global default and scrape targets from this job every 5 seconds.
-    scrape_interval: 5s
-    scrape_timeout: 5s
-
-    static_configs:
-      - targets: ['localhost:9090']
-
-  - job_name: linux
-    static_configs:
-      - targets: 
-        - 'AlekefromKz-1.aleke.kz:9100'
-        - 'AlekefromKz-2.aleke.kz:9100'
-
-
-  - job_name: bind
+{% for job in prometheus_jobs %}
+  - job_name: {{ job['name'] }}
     static_configs:
       - targets:
-        - 'bind9.aleke.kz:9119'
-
-  
-  - job_name: mysql
-    static_configs:
-      - targets:
-        - 'mysql.aleke.kz:9104'
-        - 'AlekefromKz-1.aleke.kz:9104'
-
-
-  - job_name: nginx
-    static_configs:
-      - targets:
-        - 'nginx.aleke.kz:9113'
-  
-  
+{% for target in job['targets'] %}
+        - {{ target }}.{{ domain }}:{{ job['port'] }}
+{% endfor %}
+{% endfor %}

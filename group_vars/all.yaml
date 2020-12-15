@@ -1,4 +1,4 @@
-mysql_host: AlekefromKz-1.aleke.kz
+mysql_host: db-1.aleke.kz
 mysql_database: agama
 mysql_user: agama
 mysql_password: !vault |
@@ -17,15 +17,11 @@ forwarders_IPs:
   - 9.9.9.10
 
 allowed_IPs:
-  - 192.168.42.0/24 
+  - 192.168.42.0/24
   - 127.0.0.0/8
   - 172.17.0.0/16
 
-backup: 192.168.42.39
-
-prometheus_nodes:
-  - AlekefromKz-1.aleke.kz
-  - AlekefromKz-2.aleke.kz
+backup: 192.168.42.156
 
 prometheus_mysqld_exporter: !vault |
           $ANSIBLE_VAULT;1.1;AES256
@@ -56,7 +52,6 @@ nginx_docker_per_vm: 2
 
 domain: aleke.kz
 
-
 dns_transfer_secret: !vault | 
           $ANSIBLE_VAULT;1.1;AES256
           64623466626566663938373434306261313739383963636335303430333431643035386565613564
@@ -76,5 +71,79 @@ dns_update_secret: !vault |
           31366238383932646630306332326434383034346663643937303535663963373433323638383065
           3963366365633462373965633736366361393462306431326464
 
-
           
+prometheus_jobs:
+  - name: linux
+    targets: "{{ groups['all'] }}"
+    port: 9100
+
+  - name: bind9
+    targets:
+      - ns-1
+      - ns-2
+      - ns-3
+    port: 9119
+
+  - name: mysql
+    targets:
+      - db-1
+      - db-2
+    port: 9104
+  
+  - name: keepalived
+    targets:
+      - keepalived-1
+      - keepalived-2
+    port: 9165
+
+  - name: haproxy
+    targets:
+      - haproxy-1
+      - haproxy-2
+    port: 9101
+
+  - name: nginx
+    targets:
+      - nginx
+    port: 9113
+
+
+dns_cnames:
+  - cname: ns-1
+    real: "{{ groups['dns_servers'][0] }}"
+
+  - cname: ns-2
+    real: "{{ groups['dns_servers'][1] }}"
+
+  - cname: ns-3
+    real: "{{ groups['dns_servers'][2] }}"
+
+  - cname: haproxy-1
+    real: "{{ groups['application'][0] }}"
+
+  - cname: haproxy-2
+    real: "{{ groups['application'][1] }}"
+
+  - cname: keepalived-1
+    real: "{{ groups['application'][0] }}" 
+
+  - cname: keepalived-2
+    real: "{{ groups['application'][1] }}"
+
+  - cname: db-1
+    real: "{{ groups['application'][0] }}"
+
+  - cname: db-2
+    real: "{{ groups['application'][1] }}" 
+
+  - cname: grafana
+    real: "{{ groups['internal'][0] }}"
+
+  - cname: influxdb
+    real: "{{ groups['influxdb'][0] }}" 
+
+  - cname: nginx
+    real: "{{ groups['internal'][0] }}" 
+
+  - cname: prometheus
+    real: "{{ groups['internal'][0] }}" 

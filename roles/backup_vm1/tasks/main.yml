@@ -1,0 +1,65 @@
+---
+
+- name: Create a MySQL user for the agama database
+  mysql_user:
+    name: "backup"
+    password: "{{backup_mysql_password}}"
+    priv: "agama.*:ALL"
+    host: "%"
+    state: present
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+
+
+- name: Store password
+  template:
+    src: .my.cnf.j2
+    dest: /home/backup/.my.cnf
+
+- name: Add folder backup
+  file:
+    path: ~/backup
+    state: directory
+  become_user: backup
+
+
+- name: Add folder restore
+  file:
+    path: ~/restore
+    state: directory
+  become_user: backup
+
+
+- name: Add folder scripts
+  file:
+    path: ~/scripts
+    state: directory
+  become_user: backup
+
+
+- name: Install duplicity
+  apt:
+    name: duplicity
+
+
+- name: Synday script
+  template:
+    src: sunday.sh.j2
+    dest: /home/backup/scripts/sunday.sh
+    mode: u=xrw,g=r,o=r
+    owner: backup
+  become_user: backup
+  
+
+- name: Everyday script
+  template:
+    src: everyday.sh.j2
+    dest: /home/backup/scripts/everyday.sh
+    mode: u=xrw,g=r,o=r
+    owner: backup
+  become_user: backup
+
+
+- name: Cron configurations
+  template:
+    src: backup.j2
+    dest: /etc/cron.d/backup

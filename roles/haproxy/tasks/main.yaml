@@ -3,14 +3,7 @@
 - name: HAproxy package 
   apt: 
     name: haproxy
-    
-
-- name: HAproxy started and enabled
-  service:
-    name: haproxy
-    state: started
-    enabled: yes
-    
+        
 
 - name: HAproxy config
   template:
@@ -20,10 +13,18 @@
     - Restart HAproxy
 
 
+- name: HAproxy started and enabled
+  service:
+    name: haproxy
+    state: started
+    enabled: yes
+    
+
 - name: HAproxy exporter container
   docker_container:
     name: HAproxyEeeexporter
     image: quay.io/prometheus/haproxy-exporter:v0.9.0
+    restart_policy: always
     ports:
       - 9101:9101
     command: --haproxy.scrape-uri="http://172.17.0.1:88/haproxy?stats;csv"

@@ -1,0 +1,9 @@
+#!/bin/bash
+
+d=$(date +"%m-%d-%Y")
+d=${d##*-}-${d%-*}
+lst_sunday=$(date -d "$d -$(date -d $d +%u) days" +"%Y-%m-%d")
+
+mysqldump agama > ~/backup/agama.sql
+duplicity --no-encryption incremental ~/backup/agama.sql rsync://AlekefromKz@backup.aleke.kz//home/AlekefromKz/backup-$lst_sunday/agama
+
