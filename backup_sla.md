@@ -1,46 +1,74 @@
-This course helped me to understand how do many sevices work. Right now on two machines I have following services: Nginx, MySQL, bind9, uWSGI, Prometheus, Grafana, Telegraf, InfluxDB.
+[INTRODUCTION]
 
-
-In this file I am going to describe the way I would backup my Infrastructure. To be honest, I have some doubts about what services to backup and what not to, but I will try do to my best. Let's assume our company is called Agama_Qazyna and the main product is Agama web app working on my first virtual machine. 
-
-
-Part 1: Backup coverage
-
-Services such as Nginx, bind9, uWSGI, Prometheus and Telegraf are easily installed and configured from my ansible playbook. That is why I am not going to backup these services. 
-
-Coming to MySQL, InfluxDB and Grafana, these services are those I find need to be backuped. 
-
-MySQL contains customer information was somewhen entered on Agama web app and we have to save this data as it is our main product. 
-
-Telegraf transfers logs from syslog to InfluxDB and I should to backup only one of them. I am going ta backup InfluxDB only.
-
-The last service is Grafana. Grafana's dashboards are not configured from ansible playbook and the way to restore beautiful graphs is JSON, which can be obtained in settings of a dashboard. I am going to backup such JSON files of all dashboards. 
+Main product of my startup is Agama application. It is a simple Flask application, which can be used as to-do list. I try to do my best to let my customers be able to use Agama almost every time. It is done by using Keepalived, HAProxy, Docker and many other services, which I will mention later. I have three machines, two of which are used for aplication and the other one is for internal services. 
 
 
 
-Part 2: Backup RPO
+[SERVICES]
+
+Application machines have following services: HAProxy, Keepalived, Dockerized agama, MySQL: Master and Slave, Bind slave, Prometheus node exporter and exporters for HAProxy, Keepalived, MySQL and Bind.
+
+The third machine: Bind master, InfluxDB, Telegraf, Prometheus, Grafana, Nginx,  Prometheus node exporter and exporters for Nginx.
+
+I configure Rsyslog as well, to be able to monitore my machines using Grafana.
+
+
+
+[Backup coverage]
+
+All services except MySQL, InfluxDB and Grafana can be restored using my infra.yaml ansible playbook. MySQL, InfluxDB and Grafana need to be backuped. 
+
+MySQL contains customer information which was somewhen entered on Agama web app and I have to save this data as it is our main product. 
+
+Telegraf transfers logs from syslog to InfluxDB and that is why Telegraf database in InfluxDB should be backed up as well.
+
+Latency database should be backed up as well to check latency during specific time. 
+
+The last service is Grafana. It is one of the most important parts of my monitoring and to be able to use old dashboards it should be backed up. 
+
+
+
+[Backup RPO]
 
 <!-- the amount of data that can be lost before significant harm to the business occurs -->
 
-It is really hard to choose appropriate amount of time. In case our company members write to Agama some important data, then every minute costs a lot.
+It is really hard to choose appropriate amount of time. In case my company members write to Agama some important data, then every minute costs a lot. In case of Agama, RPO is one hour.
+
+Information saved in Latency, Telegraf and Grafana are not as valuable as Agama is and RPO is one day.
 
 
-Part 3: Versioning and retention 
 
-There is one backup onstite and one offsite. Every backup should be stored for one month.
+[Versioning and retention]
 
+There is one backup onstite and one offsite. 
 
-Part 4: Usability
+Backup of Agama and Telegraf should be stored for 8 weeks (56 days), while Latency and Grafana only for 4 weeks(28 days).
 
-No idea yet. Hope to understand it after next lecture
+Every sunday I create folder on backup machine called "backup-%Y-%m-%d". For instance, backup-2020-12-13
 
-
-Part 5: Restoration criteria 
-
-Backup shoul be restored as one on the services is crashed or if there is need to find old information
-
-Part 6: Backup RTO
-
-Agama service can not be down without causing substantial damage to the business. This high priority applications may only be down for a few seconds without incurring impact on employees and customers.
+And inside of this folder I create four following folders: agama, grafana, telegraf, latency. In these folders backups of different services are stored. Every sunday I do full backups and from Monday to Saturday incremental only. Backups are done at night as during that time services are less busy. 
 
 
+
+[Usability]
+
+1. Backup can be used. 
+2. Backup was created in time.
+3. Check if data and services can be restored using this backup.
+
+
+
+[Restoration criteria]
+
+1. Sensitive file has been deleted.
+2. Services failed and they are hard or too long to be restored manually.
+3. Services have been altered the infrastructure system with errors.
+4. Hardware failure or replacement occured.
+5. Manager could give special reason for it.
+
+
+
+
+[Backup RTO]
+
+30 minutes
