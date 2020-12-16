@@ -7,7 +7,13 @@
          - python3-pymysql
       update_cache: yes
  
+ - name: MySQL enabled and started
+   service:
+      name: mysql
+      enabled: yes
+      state: started
 
+      
  - name: Change default port
    template:
       src: mysql_default
@@ -44,8 +50,3 @@
       login_unix_socket: /var/run/mysqld/mysqld.sock
 
 
- - name: MySQL enabled and started
-   service:
-      name: mysql
-      enabled: yes
-      state: started

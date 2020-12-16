@@ -24,6 +24,6 @@
 
 - name: Ensure prometheus-nginx-exporter is started and enabled
   service:
-    name: nginx
+    name: prometheus-nginx-exporter 
     state: started
     enabled: yes
