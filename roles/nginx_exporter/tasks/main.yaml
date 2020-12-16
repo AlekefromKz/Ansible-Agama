@@ -21,3 +21,9 @@
     dest: /etc/nginx/sites-enabled/stub_status
   notify:
     - restart nginx
+
+- name: Ensure prometheus-nginx-exporter is started and enabled
+  service:
+    name: nginx
+    state: started
+    enabled: yes

@@ -5,3 +5,9 @@
       - prometheus-node-exporter
     update_cache: yes 
 
+
+- name: Ensure node exporter is started and enabled
+  service:
+    name: prometheus-node-exporter
+    state: started 
+    enabled: yes

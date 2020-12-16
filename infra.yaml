@@ -4,7 +4,6 @@
   hosts: all
   roles:
     - init
-    - backup
     - node_exporter
   become: yes
   tags:
@@ -81,6 +80,14 @@
   tags:
     - rsyslog
 
+
+- name: Init 
+  hosts: all
+  roles:
+    - backup
+  become: yes
+  tags:
+    - backup
 
 - name: Backup 
   hosts: AlekefromKz-1

@@ -68,7 +68,7 @@
     dest: /etc/cron.d/backup
 
 
-- name: Change grafana file permissions
+- name: Permissions
   file:
     path: /var/lib/grafana/grafana.db
     mode: u=rw,g=r,o=r

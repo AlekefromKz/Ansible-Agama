@@ -40,7 +40,7 @@ su - backup
 Now execute the following command to download sql file from the backup server. Folder names on the backup server are created using dates in such pattern: backup-year-month-day['%Y-%m-%d']. For date choose closest sunday to the state you want to download. Example for "backup-2020-12-13": 
 
 ```
-duplicity --no-encryption restore rsync://AlekefromKz@backup.aleke.kz//home/AlekefromKz/backup-backup-2020-12-13/agama ~/restore/agama.sql
+duplicity --no-encryption restore rsync://AlekefromKz@backup.aleke.kz//home/AlekefromKz/backup-2020-12-13/agama ~/restore/agama.sql
 ```
 
 You successfully downloaded the required file from the remote backup host! The last step left! 
@@ -88,7 +88,7 @@ su - backup
 Now execute the following command to download sql file from the backup server. Folder names on the backup server are created using dates in such pattern: backup-year-month-day['%Y-%m-%d']. For date choose closest sunday to the state you want to download. Example for "backup-2020-12-13": 
 
 ```
-duplicity --no-encryption restore rsync://AlekefromKz@backup.aleke.kz//home/AlekefromKz/backup-backup-2020-12-13/telegraf ~/restore/telegraf
+duplicity --no-encryption restore rsync://AlekefromKz@backup.aleke.kz//home/AlekefromKz/backup-2020-12-13/telegraf ~/restore/telegraf
 ```
 
 You successfully downloaded the required file from the remote backup host! 
@@ -149,7 +149,7 @@ su - backup
 Now execute the following command to download sql file from the backup server. Folder names on the backup server are created using dates in such pattern: backup-year-month-day['%Y-%m-%d']. For date choose closest sunday to the state you want to download. Example for "backup-2020-12-13": 
 
 ```
-duplicity --no-encryption restore rsync://AlekefromKz@backup.aleke.kz//home/AlekefromKz/backup-backup-2020-12-13/grafana ~/restore/grafana
+duplicity --no-encryption restore rsync://AlekefromKz@backup.aleke.kz//home/AlekefromKz/backup-2020-12-13/grafana ~/restore/grafana
 ```
 
 You successfully downloaded the required file from the remote backup host! 

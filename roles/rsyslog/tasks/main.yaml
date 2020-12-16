@@ -1,11 +1,4 @@
 ---
-- name: Install Influxdb-client
-  apt:
-    name: 
-      - influxdb-client
-    state: present
-
-
 - name: Rsyslog config
   template: 
     src: 51-telegraf.conf.j2
