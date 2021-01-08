@@ -118,7 +118,7 @@ Presenting your solution
 If you have run the Ansible command mentioned above, and it did not trigger any
 changes, you are ready to present your solution.
 
-[Here](./meta.md#Testing) you can find more details on how we will test your
+[Here](https://github.com/romankuchin/ica0002-2020/blob/master/exam/meta.md#Testing) you can find more details on how we will test your
 submission.
 
 **But make sure to test it yourself first!**
