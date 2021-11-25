@@ -1,0 +1,11 @@
+[Unit]
+Description=Prometheus exporter for Nginx server
+Documentation=https://prometheus.io/docs/introduction/overview/
+
+[Service]
+Restart=always
+User=prometheus
+ExecStart=/usr/local/bin/nginx-prometheus-exporter
+
+[Install]
+WantedBy=multi-user.target
