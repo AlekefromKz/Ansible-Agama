@@ -1,28 +1,117 @@
 ---
+- name: Add the user 'prometheus' with a specific uid and a primary group of 'admin'
+  user:
+    name: prometheus
+    group: prometheus
+    comment: prometheus user
+    create_home: no
+
+- name: create /etc/prometheus directory
+  file:
+    path: /etc/prometheus
+    state: directory
+    owner: prometheus
+    group: prometheus
+
+- name: create /var/lib/prometheus directory
+  file:
+    path: /etc/prometheus
+    state: directory
+    owner: prometheus
+    group: prometheus
+
 - name: download prometheus
   unarchive:
-    src: https://github.com/prometheus/prometheus/releases/download/v2.32.0-beta.0/prometheus-2.32.0-beta.0.linux-amd64.tar.gz
+    src: https://github.com/prometheus/prometheus/releases/download/v2.31.1/prometheus-2.31.1.linux-amd64.tar.gz
     dest: /usr/local/bin/
     copy: no
+
+- name: Extract foo.tgz into /var/lib/foo
+  unarchive:
+    src: /usr/local/bin/prometheus-2.31.1.linux-amd64.tar.gz
+    dest: /usr/local/bin/
 
 - name: Creates directory
   file:
     path: /srv/prometheus
     state: directory
 
+- name: Copy file prometheus-2.31.1.linux-amd64/prometheus to /usr/local/bin
+  copy:
+    src: /usr/local/bin/prometheus-2.31.1.linux-amd64/prometheus
+    dest: /usr/local/bin
+    remote_src: yes
+
+- name: Copy file prometheus-2.31.1.linux-amd64/promtool to /usr/local/bin/
+  copy:
+    src: /usr/local/bin/prometheus-2.31.1.linux-amd64/prometheus
+    dest: /usr/local/bin
+    remote_src: yes
+
+- name: Copy file prometheus-2.31.1.linux-amd64/promtool to /etc/prometheus
+  copy:
+    src: /usr/local/bin/prometheus-2.31.1.linux-amd64/consoles
+    dest: /usr/local/bin
+    remote_src: yes
+
+- name: Copy file prometheus-2.31.1.linux-amd64/promtool to /etc/prometheus
+  copy:
+    src: /usr/local/bin/prometheus-2.31.1.linux-amd64/console_libraries
+    dest: /usr/local/bin
+    remote_src: yes
+
+- name: Remove prometheus-2.31.1.linux-amd64.tar.gz
+  file:
+    path: /usr/local/bin/prometheus-2.31.1.linux-amd64.tar.gz
+    state: absent
+
+- name: Remove prometheus-2.31.1.linux-amd64
+  file:
+    path: /usr/local/bin/prometheus-2.31.1.linux-amd64
+    state: absent
+
+- name: Ansible set owner permission
+  file:
+    path: "{{ item }}"
+    owner: prometheus
+    group: prometheus
+    state: file
+  with_items:
+    - /etc/prometheus
+    - /usr/local/bin/prometheus
+    - /usr/local/bin/promtool
+
+- name: Ansible set owner permission
+  file:
+    path: "{{ item }}"
+    owner: prometheus
+    group: prometheus
+    state: directory
+    recurse: yes
+  with_items:
+    - /etc/prometheus/consoles
+    - /etc/prometheus/console_libraries
+    - /var/lib/prometheus
+
 # - name: move binary
-#   copy: remote_src=True
-#     src=/usr/local/bin/prometheus-2.32.0-beta.0.linux-amd64/*
-#     dest=/srv/prometheus/
-#     state=absent
+#   shell: rm -rf /srv/prometheus/* && mv /usr/local/bin/prometheus-2.31.1.linux-amd64/* /srv/prometheus/
 
-- name: move binary
-  shell: rm -rf /srv/prometheus/* && mv /usr/local/bin/prometheus-2.32.0-beta.0.linux-amd64/* /srv/prometheus/
+# - name: Downloading bash script
+#   template:
+#     src: runprometheus.sh
+#     dest: /home/ec2-user/runprometheus.sh
+#     mode: 0755
 
-- name: Donwloading bash script
+- name: Downloading yml file
   template:
-    src: runprometheus.sh
-    dest: /home/ec2-user/runprometheus.sh
+    src: myPrometheus.yml
+    dest: /etc/prometheus/prometheus.yml
+    mode: 0755
+
+- name: Downloading yml file
+  template:
+    src: myPrometheus.service
+    dest: /etc/systemd/system/prometheus.service
     mode: 0755
 
 - name: Servisizing prometheus
