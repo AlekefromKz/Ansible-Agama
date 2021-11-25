@@ -2,7 +2,6 @@
 - name: Add the user 'prometheus' with a specific uid and a primary group of 'admin'
   user:
     name: prometheus
-    group: prometheus
     comment: prometheus user
     create_home: no
 
@@ -15,7 +14,7 @@
 
 - name: create /var/lib/prometheus directory
   file:
-    path: /etc/prometheus
+    path: /var/lib/prometheus
     state: directory
     owner: prometheus
     group: prometheus
@@ -25,11 +24,6 @@
     src: https://github.com/prometheus/prometheus/releases/download/v2.31.1/prometheus-2.31.1.linux-amd64.tar.gz
     dest: /usr/local/bin/
     copy: no
-
-- name: Extract foo.tgz into /var/lib/foo
-  unarchive:
-    src: /usr/local/bin/prometheus-2.31.1.linux-amd64.tar.gz
-    dest: /usr/local/bin/
 
 - name: Creates directory
   file:
@@ -44,20 +38,20 @@
 
 - name: Copy file prometheus-2.31.1.linux-amd64/promtool to /usr/local/bin/
   copy:
-    src: /usr/local/bin/prometheus-2.31.1.linux-amd64/prometheus
+    src: /usr/local/bin/prometheus-2.31.1.linux-amd64/promtool
     dest: /usr/local/bin
     remote_src: yes
 
-- name: Copy file prometheus-2.31.1.linux-amd64/promtool to /etc/prometheus
+- name: Copy file prometheus-2.31.1.linux-amd64/console to /etc/prometheus
   copy:
     src: /usr/local/bin/prometheus-2.31.1.linux-amd64/consoles
-    dest: /usr/local/bin
+    dest: /etc/prometheus/
     remote_src: yes
 
-- name: Copy file prometheus-2.31.1.linux-amd64/promtool to /etc/prometheus
+- name: Copy file prometheus-2.31.1.linux-amd64/console_libraries to /etc/prometheus
   copy:
     src: /usr/local/bin/prometheus-2.31.1.linux-amd64/console_libraries
-    dest: /usr/local/bin
+    dest: /etc/prometheus/
     remote_src: yes
 
 - name: Remove prometheus-2.31.1.linux-amd64.tar.gz
@@ -70,18 +64,17 @@
     path: /usr/local/bin/prometheus-2.31.1.linux-amd64
     state: absent
 
-- name: Ansible set owner permission
+- name: Ansible set owner permission for files
   file:
     path: "{{ item }}"
     owner: prometheus
     group: prometheus
     state: file
   with_items:
-    - /etc/prometheus
     - /usr/local/bin/prometheus
     - /usr/local/bin/promtool
 
-- name: Ansible set owner permission
+- name: Ansible set owner permission for directoris
   file:
     path: "{{ item }}"
     owner: prometheus
@@ -89,18 +82,10 @@
     state: directory
     recurse: yes
   with_items:
+    - /etc/prometheus
     - /etc/prometheus/consoles
     - /etc/prometheus/console_libraries
     - /var/lib/prometheus
-
-# - name: move binary
-#   shell: rm -rf /srv/prometheus/* && mv /usr/local/bin/prometheus-2.31.1.linux-amd64/* /srv/prometheus/
-
-# - name: Downloading bash script
-#   template:
-#     src: runprometheus.sh
-#     dest: /home/ec2-user/runprometheus.sh
-#     mode: 0755
 
 - name: Downloading yml file
   template:
@@ -108,7 +93,7 @@
     dest: /etc/prometheus/prometheus.yml
     mode: 0755
 
-- name: Downloading yml file
+- name: Downloading service file
   template:
     src: myPrometheus.service
     dest: /etc/systemd/system/prometheus.service
