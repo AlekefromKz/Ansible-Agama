@@ -1,2 +1,2 @@
 # Set the command-line arguments to pass to the server.
-ARGS="--web.external-url=http://AlekefromKz-1.aleke.kz:2280/prometheus"
+ARGS="--web.external-url=http://cryptocalc.ml/prometheus"

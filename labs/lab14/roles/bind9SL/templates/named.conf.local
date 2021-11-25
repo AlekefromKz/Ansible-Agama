@@ -1,6 +1,0 @@
-zone "{{domain}}" {
-        type master;
-        file "/var/lib/bind/db.{{domain}}";
-        allow-transfer { key transfer_secret; };
-        allow-update { key update_secret; };
-};

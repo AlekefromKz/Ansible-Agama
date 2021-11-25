@@ -1,0 +1,14 @@
+[Unit]
+Description=Prometheus
+Documentation=https://github.com/romankuchin/ica0002-2020/blob/master/08-logging/lab.md
+
+User=root
+
+[Service]
+ExecStart = /home/ec2-user/runprometheus.sh
+
+
+Restart=on-abort
+
+[Install]
+WantedBy = multi-user.target

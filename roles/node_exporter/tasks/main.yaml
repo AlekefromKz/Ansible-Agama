@@ -1,13 +1,12 @@
---- 
+---
 - name: Install Node Exporters packages
-  apt: 
-    name: 
+  yum:
+    name:
       - prometheus-node-exporter
-    update_cache: yes 
-
+    update_cache: yes
 
 - name: Ensure node exporter is started and enabled
   service:
     name: prometheus-node-exporter
-    state: started 
+    state: started
     enabled: yes

@@ -1,7 +1,0 @@
-STOP SLAVE;
-CHANGE MASTER TO MASTER_HOST='AlekefromKz-1.aleke.kz',
-                 MASTER_USER='replication',
-                 MASTER_PASSWORD='{{pswd}}';
-RESET SLAVE;
-START SLAVE;
-SHOW SLAVE STATUS\G

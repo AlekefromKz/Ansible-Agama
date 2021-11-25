@@ -6,7 +6,6 @@ server {
 	 include uwsgi_params;
     }
 
-
     location /metrics {
          proxy_pass http://127.0.0.1:9100/metrics; 
     }
@@ -15,20 +14,15 @@ server {
          proxy_pass http://127.0.0.1:9090;	 
     }
 		
-    location /mysql-metrics {
-         proxy_pass http://127.0.0.1:9104/metrics;	 
-    }
-
-    location /bind-metrics {
-         proxy_pass http://127.0.0.1:9119/metrics;	 
-    }    
-
     location /nginx-metrics{
          proxy_pass http://127.0.0.1:9113/metrics;	 
     }
 
-    location /grafana {
-         proxy_pass http://127.0.0.1:3000;	 
+    location /docker-project {
+         proxy_pass http://127.0.0.1:8070;	 
     }
 
+    location /native-project {
+         proxy_pass http://127.0.0.1:8080;	 
+    }
 } 

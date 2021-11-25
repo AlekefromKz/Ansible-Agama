@@ -1,7 +1,0 @@
----
-
-- name: backup user
-  roles: 
-    - backup
-  hosts: all
-  become: yes

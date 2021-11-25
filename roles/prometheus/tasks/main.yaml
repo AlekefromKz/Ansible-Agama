@@ -1,24 +1,39 @@
 ---
-- name: install prometheus
-  apt: 
-    name: prometheus
+- name: download prometheus
+  unarchive:
+    src: https://github.com/prometheus/prometheus/releases/download/v2.32.0-beta.0/prometheus-2.32.0-beta.0.linux-amd64.tar.gz
+    dest: /usr/local/bin/
+    copy: no
+
+- name: Creates directory
+  file:
+    path: /srv/prometheus
+    state: directory
+
+- name: move binary
+  copy: remote_src=True
+    src=/usr/local/bin/prometheus-2.32.0-beta.0.linux-amd64/prometheus
+    dest=/srv/prometheus/
+
+# - name: move binary
+# shell: rm -rf /srv/prometheus/* && mv /usr/local/bin/prometheus-2.32.0-beta.0.linux-amd64/* /srv/prometheus/
+
+- name: Donwloading bash script
+  template:
+    src: runprometheus.sh
+    dest: /home/ec2-user/runprometheus.sh
+    mode: 0755
+
+- name: Servisizing prometheus
+  template:
+    src: prometheus.service.j2
+    dest: /etc/systemd/system/prometheus.service
+  notify:
+    - Systemctl daemon-reload
+    - Restart prometheus
 
 - name: Prometheus enabled and started
   service:
     name: prometheus
     state: started
     enabled: yes
-
-- name: add default ARGS
-  template:
-    src: ../templates/prometheus
-    dest:  /etc/default/prometheus
-  notify: 
-    - restart prometheus
-
-- name: changing yaml file in prometheus
-  template:
-    src: ../templates/prometheus.yaml.j2
-    dest:  /etc/prometheus/prometheus.yml
-  notify: 
-    - restart prometheus
