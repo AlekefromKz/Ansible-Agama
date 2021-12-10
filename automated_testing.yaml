@@ -9,6 +9,7 @@
   become: yes
   gather_facts: no
   roles:
-    # - prometheus
+    - prometheus
     - nginx_exporter
-    # - node_exporter
+    - node_exporter
+    - docker_exporter

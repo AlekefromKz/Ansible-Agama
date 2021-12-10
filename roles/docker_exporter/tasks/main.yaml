@@ -1,0 +1,12 @@
+---
+- name: Downloading yml file
+  template:
+    src: daemon.json
+    dest: /etc/docker/daemon.json
+    mode: 0755
+
+- name: Restart docker
+  service:
+    name: docker
+    state: restarted
+    enabled: yes

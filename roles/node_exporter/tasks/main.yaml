@@ -1,11 +1,22 @@
 ---
-- name: Install Node Exporters packages
-  yum:
-    name:
-      - prometheus-node-exporter
-    update_cache: yes
+- name: Download
+  unarchive:
+    src: https://github.com/prometheus/node_exporter/releases/download/v1.3.0/node_exporter-1.3.0.linux-amd64.tar.gz
+    dest: /usr/local/bin
+    remote_src: yes
 
-- name: Ensure node exporter is started and enabled
+- name: Basic configuration
+  template:
+    src: systemd-conf
+    dest: /etc/systemd/system/prometheus-node-exporter.service
+  notify:
+    - Systemctl daemon-reload
+    - Restart node-exporter
+
+- name: Do meta flush
+  meta: flush_handlers
+
+- name: Start node-exporter
   service:
     name: prometheus-node-exporter
     state: started
